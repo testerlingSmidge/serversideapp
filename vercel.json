@@ -13,7 +13,7 @@
   "routes": [
     {
       "src": "/api/trigger",
-      "dest": "/api/trigger.js"
+      "dest": "api/trigger.js"
     },
     {
       "src": "/(.*)",
