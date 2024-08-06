@@ -1,8 +1,15 @@
 {
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-rate-limit": "^7.4.0",
-    "helmet": "^7.1.0"
+    "express": "^4.17.1",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "start": "node api/trigger.js"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   }
 }
