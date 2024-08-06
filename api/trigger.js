@@ -43,7 +43,7 @@ app.post('/api/update', (req, res) => {
         setTimeout(() => {
             targetIdValue = 1;
             console.log("Reset targetId value to 1");
-        }, 100); // 100 milliseconds delay
+        }, 5000); // 5 seconds delay
     } else {
         res.status(400).json({ status: 'error', message: 'Invalid value' });
     }
