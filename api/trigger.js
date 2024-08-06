@@ -1,11 +1,14 @@
 const express = require('express');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 
 // Middleware
 app.use(helmet());
+app.use(express.static('public'));
 
 // Rate Limiting
 const limiter = rateLimit({
@@ -17,16 +20,22 @@ app.use(limiter);
 // Disable 'X-Powered-By' header
 app.disable('x-powered-by');
 
-// Endpoint
+// Endpoint to serve modified HTML
 app.get('/trigger', (req, res) => {
-    console.log("Sending Trigger");
-    setTimeout(() => {
-        res.json({ status: "triggered", value: 500000 });
-        console.log("Resetting Trigger");
-        setTimeout(() => {
-            console.log("Reset to initial value");
-        }, 2000);
-    }, 2000);
+    const filePath = path.join(__dirname, '../public/index.html');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Server Error');
+            return;
+        }
+        
+        // Modify the HTML content
+        let modifiedHtml = data.replace('<div id="targetId">1</div>', '<div id="targetId">500000</div>');
+
+        // Send the modified HTML content
+        res.send(modifiedHtml);
+    });
 });
 
 module.exports = app;
