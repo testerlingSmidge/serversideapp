@@ -4,19 +4,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const body = document.body;
 
     triggerGong.addEventListener('click', () => {
-        fetch('/api/trigger')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.text();
-            })
-            .then(data => {
-                document.open();
-                document.write(data);
-                document.close();
-            })
-            .catch(error => console.error('Error:', error));
+        fetch('/api/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ value: 500000 }) // Set value to 500000 for testing
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                console.log(`Updated targetId to ${data.targetIdValue}`);
+                // Reload the page to reflect the updated targetId value
+                location.reload();
+            } else {
+                console.error('Failed to update targetId:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
     });
 
     modeToggle.addEventListener('change', () => {
