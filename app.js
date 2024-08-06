@@ -19,9 +19,6 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Disable 'X-Powered-By' header
-app.disable('x-powered-by');
-
 app.get('/trigger', (req, res) => {
     console.log("Sending Trigger");
     setTimeout(() => {
