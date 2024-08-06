@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const body = document.body;
 
     triggerGong.addEventListener('click', () => {
-        // Disable the button to prevent multiple clicks
-        triggerGong.disabled = true;
-        
+        console.log('Button clicked'); // Log button click
+        triggerGong.disabled = true; // Disable the button to prevent multiple clicks
+
         fetch('/api/update', {
             method: 'POST',
             headers: {
@@ -23,18 +23,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
         .then(data => {
             if (data.status === 'success') {
                 console.log(`Updated targetId to ${data.targetIdValue} with uniqueId ${data.uniqueId}`);
-                // Reload the page to reflect the updated targetId value
-                location.reload();
+                location.reload(); // Reload the page to reflect the updated targetId value
             } else {
                 console.error('Failed to update targetId:', data.message);
-                // Re-enable the button in case of failure
-                triggerGong.disabled = false;
+                triggerGong.disabled = false; // Re-enable the button in case of failure
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            // Re-enable the button in case of error
-            triggerGong.disabled = false;
+            triggerGong.disabled = false; // Re-enable the button in case of error
         });
     });
 
