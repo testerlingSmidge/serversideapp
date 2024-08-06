@@ -20,6 +20,10 @@
       "dest": "api/trigger.js"
     },
     {
+      "src": "/api/status",
+      "dest": "api/trigger.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }
