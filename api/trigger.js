@@ -1,14 +1,14 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid'); // Import UUID library
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-app.use(express.json()); // To parse JSON bodies
+app.use(express.json());
 
-// Simulate a global variable to store targetId value and unique ID
 let targetIdValue = 1;
 let uniqueId = null;
+let lastRequestId = null;
 
 // Endpoint to serve modified HTML
 app.get('/api/trigger', (req, res) => {
@@ -22,7 +22,6 @@ app.get('/api/trigger', (req, res) => {
         }
         
         try {
-            // Modify the HTML content with the current targetIdValue and uniqueId
             let modifiedHtml = data.replace('<div id="targetId">1</div>', `<div id="targetId">${targetIdValue}</div>`);
             modifiedHtml = modifiedHtml.replace('<div id="uniqueId"></div>', `<div id="uniqueId">${uniqueId}</div>`);
             console.log("Sending modified HTML content");
@@ -36,11 +35,21 @@ app.get('/api/trigger', (req, res) => {
 
 // Endpoint to update targetId value and generate a unique ID
 app.post('/api/update', (req, res) => {
-    console.log("Received request to /api/update with body:", req.body);
+    const requestId = uuidv4();
+    console.log(`Received request to /api/update with body:`, req.body, `Request ID: ${requestId}`);
+    
+    // Check if the request is duplicate
+    if (lastRequestId === requestId) {
+        console.log(`Duplicate request detected: ${requestId}`);
+        return res.status(400).json({ status: 'error', message: 'Duplicate request' });
+    }
+
+    lastRequestId = requestId;
+    
     const { value } = req.body;
     if (typeof value === 'number') {
         targetIdValue = value;
-        uniqueId = uuidv4(); // Generate a new unique ID
+        uniqueId = uuidv4();
         console.log(`Updated targetId to ${targetIdValue} with uniqueId ${uniqueId}`);
         res.status(200).json({ status: 'success', targetIdValue, uniqueId });
         
@@ -49,7 +58,7 @@ app.post('/api/update', (req, res) => {
             targetIdValue = 1;
             uniqueId = null;
             console.log("Reset targetId value to 1 and uniqueId to null");
-        }, 5000); // 5 seconds delay for testing
+        }, 5000);
     } else {
         console.error("Invalid value received:", value);
         res.status(400).json({ status: 'error', message: 'Invalid value' });
