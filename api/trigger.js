@@ -1,28 +1,25 @@
-const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-const app = express();
-
-// Middleware
-app.use(express.static('public'));
-
-// Endpoint to serve modified HTML
-app.get('/trigger', (req, res) => {
+module.exports = (req, res) => {
+    console.log("Received request to /api/trigger");
     const filePath = path.join(__dirname, '../public/index.html');
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
-            console.error(err);
+            console.error("Error reading file:", err);
             res.status(500).send('Server Error');
             return;
         }
         
-        // Modify the HTML content
-        let modifiedHtml = data.replace('<div id="targetId">1</div>', '<div id="targetId">500000</div>');
-
-        // Send the modified HTML content
-        res.send(modifiedHtml);
+        try {
+            // Modify the HTML content
+            let modifiedHtml = data.replace('<div id="targetId">1</div>', '<div id="targetId">500000</div>');
+            console.log("Sending modified HTML content");
+            // Send the modified HTML content
+            res.send(modifiedHtml);
+        } catch (error) {
+            console.error("Error processing request:", error);
+            res.status(500).send('Server Error');
+        }
     });
-});
-
-module.exports = app;
+};
