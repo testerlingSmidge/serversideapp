@@ -13,15 +13,15 @@
   "routes": [
     {
       "src": "/api/trigger",
-      "dest": "api/trigger.js"
+      "dest": "/api/trigger.js"
     },
     {
       "src": "/api/update",
-      "dest": "api/trigger.js"
+      "dest": "/api/trigger.js"
     },
     {
       "src": "/api/status",
-      "dest": "api/trigger.js"
+      "dest": "/api/trigger.js"
     },
     {
       "src": "/(.*)",
