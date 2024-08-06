@@ -37,6 +37,12 @@ app.post('/api/update', (req, res) => {
     if (typeof value === 'number') {
         targetIdValue = value;
         res.status(200).json({ status: 'success', targetIdValue });
+        
+        // Reset the targetId value after a delay
+        setTimeout(() => {
+            targetIdValue = 1;
+            console.log("Reset targetId value to 1");
+        }, 5000); // 5 seconds delay
     } else {
         res.status(400).json({ status: 'error', message: 'Invalid value' });
     }
