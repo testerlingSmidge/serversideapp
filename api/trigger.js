@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid'); // Import UUID library
 
 const app = express();
 app.use(express.json()); // To parse JSON bodies
 
-// Simulate a global variable to store targetId value
+// Simulate a global variable to store targetId value and unique ID
 let targetIdValue = 1;
+let uniqueId = null;
 
 // Endpoint to serve modified HTML
 app.get('/api/trigger', (req, res) => {
@@ -20,8 +22,9 @@ app.get('/api/trigger', (req, res) => {
         }
         
         try {
-            // Modify the HTML content with the current targetIdValue
+            // Modify the HTML content with the current targetIdValue and uniqueId
             let modifiedHtml = data.replace('<div id="targetId">1</div>', `<div id="targetId">${targetIdValue}</div>`);
+            modifiedHtml = modifiedHtml.replace('<div id="uniqueId"></div>', `<div id="uniqueId">${uniqueId}</div>`);
             console.log("Sending modified HTML content");
             res.send(modifiedHtml);
         } catch (error) {
@@ -31,27 +34,28 @@ app.get('/api/trigger', (req, res) => {
     });
 });
 
-// Endpoint to update targetId value
+// Endpoint to update targetId value and generate a unique ID
 app.post('/api/update', (req, res) => {
     const { value } = req.body;
     if (typeof value === 'number') {
-        console.log(`Updating targetIdValue to ${value}`);
         targetIdValue = value;
-        res.status(200).json({ status: 'success', targetIdValue });
+        uniqueId = uuidv4(); // Generate a new unique ID
+        res.status(200).json({ status: 'success', targetIdValue, uniqueId });
         
-        // Reset the targetId value after a brief period
+        // Reset the targetId value and unique ID after a brief period
         setTimeout(() => {
             targetIdValue = 1;
-            console.log("Reset targetId value to 1");
-        }, 5000); // 5 seconds delay
+            uniqueId = null;
+            console.log("Reset targetId value to 1 and uniqueId to null");
+        }, 5000); // 5 seconds delay for testing
     } else {
         res.status(400).json({ status: 'error', message: 'Invalid value' });
     }
 });
 
-// Endpoint to get the current targetId value
+// Endpoint to get the current targetId value and unique ID
 app.get('/api/status', (req, res) => {
-    res.status(200).json({ targetIdValue });
+    res.status(200).json({ targetIdValue, uniqueId });
 });
 
 // Export the app as a Vercel handler
