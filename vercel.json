@@ -16,6 +16,10 @@
       "dest": "api/trigger.js"
     },
     {
+      "src": "/api/update",
+      "dest": "api/trigger.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }
