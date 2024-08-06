@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const body = document.body;
 
     triggerGong.addEventListener('click', () => {
+        // Disable the button to prevent multiple clicks
+        triggerGong.disabled = true;
+        
         fetch('/api/update', {
             method: 'POST',
             headers: {
@@ -24,9 +27,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 location.reload();
             } else {
                 console.error('Failed to update targetId:', data.message);
+                // Re-enable the button in case of failure
+                triggerGong.disabled = false;
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            // Re-enable the button in case of error
+            triggerGong.disabled = false;
+        });
     });
 
     modeToggle.addEventListener('change', () => {
