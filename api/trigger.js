@@ -8,7 +8,6 @@ app.use(express.json());
 
 let targetIdValue = 1;
 let uniqueId = null;
-let lastRequestId = null;
 
 // Endpoint to serve modified HTML
 app.get('/api/trigger', (req, res) => {
@@ -35,17 +34,7 @@ app.get('/api/trigger', (req, res) => {
 
 // Endpoint to update targetId value and generate a unique ID
 app.post('/api/update', (req, res) => {
-    const requestId = uuidv4();
-    console.log(`Received request to /api/update with body:`, req.body, `Request ID: ${requestId}`);
-    
-    // Check if the request is duplicate
-    if (lastRequestId === requestId) {
-        console.log(`Duplicate request detected: ${requestId}`);
-        return res.status(400).json({ status: 'error', message: 'Duplicate request' });
-    }
-
-    lastRequestId = requestId;
-    
+    console.log("Received request to /api/update with body:", req.body);
     const { value } = req.body;
     if (typeof value === 'number') {
         targetIdValue = value;
@@ -75,5 +64,4 @@ app.get('/api/status', (req, res) => {
     }
 });
 
-// Export the app as a Vercel handler
 module.exports = app;
