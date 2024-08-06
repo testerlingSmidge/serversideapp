@@ -35,6 +35,7 @@ app.get('/api/trigger', (req, res) => {
 app.post('/api/update', (req, res) => {
     const { value } = req.body;
     if (typeof value === 'number') {
+        console.log(`Updating targetIdValue to ${value}`);
         targetIdValue = value;
         res.status(200).json({ status: 'success', targetIdValue });
         
@@ -42,7 +43,7 @@ app.post('/api/update', (req, res) => {
         setTimeout(() => {
             targetIdValue = 1;
             console.log("Reset targetId value to 1");
-        }, 10); // 10 milliseconds delay
+        }, 100); // 100 milliseconds delay
     } else {
         res.status(400).json({ status: 'error', message: 'Invalid value' });
     }
