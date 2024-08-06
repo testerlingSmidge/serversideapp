@@ -17,9 +17,6 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Disable 'X-Powered-By' header
-app.disable('x-powered-by');
-
 // Endpoint to serve modified HTML
 app.get('/trigger', (req, res) => {
     const filePath = path.join(__dirname, '../public/index.html');
