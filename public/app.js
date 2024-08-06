@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                console.log(`Updated targetId to ${data.targetIdValue}`);
+                console.log(`Updated targetId to ${data.targetIdValue} with uniqueId ${data.uniqueId}`);
                 // Reload the page to reflect the updated targetId value
                 location.reload();
             } else {
