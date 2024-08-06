@@ -4,20 +4,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const body = document.body;
 
     triggerGong.addEventListener('click', () => {
-        var targetId = document.getElementById('targetId');
-        
-        // Ensure the fetch URL is correct
         fetch('/api/trigger')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
-                return response.json();
+                return response.text();
             })
             .then(data => {
-                if (data.status === "triggered") {
-                    targetId.innerHTML = data.value;
-                }
+                document.open();
+                document.write(data);
+                document.close();
             })
             .catch(error => console.error('Error:', error));
     });
