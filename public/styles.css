@@ -1,0 +1,118 @@
+/* Reset some default styles */
+body, h1, div, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+/* Body styling */
+body {
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+body.dark-mode {
+    background-color: #333;
+    color: #f4f4f9;
+}
+
+/* Container styling */
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: inherit;
+}
+
+/* Button styling */
+button {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background-color: #3700b3;
+}
+
+/* Toggle button styling */
+.toggle-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #6200ea;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Div styling */
+#targetId {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #6200ea;
+    font-weight: bold;
+}
+
+body.dark-mode #targetId {
+    color: #bb86fc;
+}
+
+#uniqueId {
+    font-size: 14px;
+    color: #777;
+}
