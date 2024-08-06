@@ -11,7 +11,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             },
             body: JSON.stringify({ value: 500000 }) // Set value to 500000 for testing
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.status === 'success') {
                 console.log(`Updated targetId to ${data.targetIdValue} with uniqueId ${data.uniqueId}`);
