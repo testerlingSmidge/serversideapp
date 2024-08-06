@@ -38,14 +38,19 @@ app.post('/api/update', (req, res) => {
         targetIdValue = value;
         res.status(200).json({ status: 'success', targetIdValue });
         
-        // Reset the targetId value after a delay
+        // Reset the targetId value after a brief period
         setTimeout(() => {
             targetIdValue = 1;
             console.log("Reset targetId value to 1");
-        }, 5000); // 5 seconds delay
+        }, 10); // 10 milliseconds delay
     } else {
         res.status(400).json({ status: 'error', message: 'Invalid value' });
     }
+});
+
+// Endpoint to get the current targetId value
+app.get('/api/status', (req, res) => {
+    res.status(200).json({ targetIdValue });
 });
 
 // Export the app as a Vercel handler
