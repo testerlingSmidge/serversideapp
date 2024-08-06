@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     triggerGong.addEventListener('click', () => {
         var targetId = document.getElementById('targetId');
         
-        fetch('/trigger')
+        fetch('https://serversideapp-xi.vercel.app/trigger')
             .then(response => response.json())
             .then(data => {
                 if (data.status === "triggered") {
