@@ -9,7 +9,6 @@ app.use(express.json()); // To parse JSON bodies
 // Simulate a global variable to store targetId value and unique ID
 let targetIdValue = 1;
 let uniqueId = null;
-let lastRequestId = null;
 
 // Endpoint to serve modified HTML
 app.get('/api/trigger', (req, res) => {
@@ -37,17 +36,7 @@ app.get('/api/trigger', (req, res) => {
 
 // Endpoint to update targetId value and generate a unique ID
 app.post('/api/update', (req, res) => {
-    const requestId = uuidv4(); // Generate a unique request ID
-    console.log(`Received request to /api/update with body:`, req.body, `Request ID: ${requestId}`);
-    
-    // Check if the request is duplicate
-    if (lastRequestId === requestId) {
-        console.log(`Duplicate request detected: ${requestId}`);
-        return res.status(400).json({ status: 'error', message: 'Duplicate request' });
-    }
-
-    lastRequestId = requestId;
-    
+    console.log("Received request to /api/update with body:", req.body);
     const { value } = req.body;
     if (typeof value === 'number') {
         targetIdValue = value;
@@ -56,4 +45,26 @@ app.post('/api/update', (req, res) => {
         res.status(200).json({ status: 'success', targetIdValue, uniqueId });
         
         // Reset the targetId value and unique ID after a brief period
-        setTimeout(() =>
+        setTimeout(() => {
+            targetIdValue = 1;
+            uniqueId = null;
+            console.log("Reset targetId value to 1 and uniqueId to null");
+        }, 5000); // 5 seconds delay for testing
+    } else {
+        console.error("Invalid value received:", value);
+        res.status(400).json({ status: 'error', message: 'Invalid value' });
+    }
+});
+
+// Endpoint to get the current targetId value and unique ID
+app.get('/api/status', (req, res) => {
+    try {
+        res.status(200).json({ targetIdValue, uniqueId });
+    } catch (error) {
+        console.error("Error processing /api/status request:", error);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Export the app as a Vercel handler
+module.exports = app;
